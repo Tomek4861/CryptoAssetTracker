@@ -43,11 +43,11 @@ body {
 }
 
 .list-group-item span {
-    font-size: 0.875rem; /* 14px */
+    font-size: 0.875rem;
 }
 
 .badge {
-    font-size: 0.75rem; /* 12px */
+    font-size: 0.75rem;
 }
 
 button:hover {
@@ -66,4 +66,10 @@ button:active {
     color: #fff;
     max-width: 470px;
     margin-top: 20vh;
+}
+
+
+
+#candlestickChart {
+    background-color: #1f1f1f;
 }

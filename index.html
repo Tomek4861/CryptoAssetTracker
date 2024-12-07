@@ -9,6 +9,9 @@
 <script crossorigin="anonymous"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
@@ -22,14 +25,14 @@
 <body>
 
 <div class="container-fluid">
-<!--    <nav class="navbar navbar-expand-lg navbar-dark ">-->
-<!--        <div class="container-fluid">-->
-<!--        <span class="navbar-text text-white">-->
-<!--            Logged in as <strong>Tomek4861</strong>-->
-<!--        </span>-->
-<!--            <button class="btn btn-outline-danger ms-auto" type="button">Log out</button>-->
-<!--        </div>-->
-<!--    </nav>-->
+    <!--    <nav class="navbar navbar-expand-lg navbar-dark ">-->
+    <!--        <div class="container-fluid">-->
+    <!--        <span class="navbar-text text-white">-->
+    <!--            Logged in as <strong>Tomek4861</strong>-->
+    <!--        </span>-->
+    <!--            <button class="btn btn-outline-danger ms-auto" type="button">Log out</button>-->
+    <!--        </div>-->
+    <!--    </nav>-->
 
     <div class="d-flex justify-content-between align-items-center ">
         <span>Logged in as <strong>Tomek4861</strong></span>
@@ -38,12 +41,12 @@
         <button class="btn btn-outline-danger">Log out</button>
     </div>
 
-<!--    <div class="row">-->
-<!--        <h1 class="text-center fw-bold py-3">Crypto Asset Tracker</h1>-->
-<!--    </div>-->
-    <div class="row">
+    <!--    <div class="row">-->
+    <!--        <h1 class="text-center fw-bold py-3">Crypto Asset Tracker</h1>-->
+    <!--    </div>-->
+    <div class="row ">
         <div class="col-md-3">
-            <div class="card options">
+            <div class="card options asset-options">
                 <div class="card-header"><h3 class="text-center fw-bold">Options</h3></div>
                 <div class="card-body ">
 
@@ -82,23 +85,58 @@
         </div>
         <div class="col-md-7">
             <!--            <h1 class="text-center">BITCOIN USD SPOT</h1>-->
+            <div id="candlestickChart"> </div>
 
-            <img alt="placeholder" class="img-fluid rounded d-block mx-auto" src="https://via.placeholder.com/1300">
+
+
+<!--            <img alt="placeholder" class="img-fluid rounded d-block mx-auto" src="https://via.placeholder.com/1300">-->
 
         </div>
 
 
         <div class="col-md-2">
 
-            <div class="card options">
+            <div class="card options watchlist">
                 <div class="card-header"><h3 class="text-center fw-bold">Watchlist</h3></div>
                 <div class="card-body">
                     <div class="list-group">
-                        <div class="list-group-item d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center py-3">
+                        <div
+                                class="list-group-item d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center py-3">
                             <span class="fw-bold">ETH</span>
                             <span class="fw-normal text-danger mt-2 mt-md-0">3150,06 / - 0,85% USD</span>
                         </div>
-                        <div class="list-group-item d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center py-3">
+                        <div
+                                class="list-group-item d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center py-3">
+                            <span class="fw-bold">SOL</span>
+                            <span class="fw-normal text-success mt-2 mt-md-0">206,06 USD / +1,65%</span>
+                        </div>
+                        <div
+                                class="list-group-item d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center py-3">
+                            <span class="fw-bold">ETH</span>
+                            <span class="fw-normal text-danger mt-2 mt-md-0">3150,06 / - 0,85% USD</span>
+                        </div>
+                        <div
+                                class="list-group-item d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center py-3">
+                            <span class="fw-bold">SOL</span>
+                            <span class="fw-normal text-success mt-2 mt-md-0">206,06 USD / +1,65%</span>
+                        </div>
+                        <div
+                                class="list-group-item d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center py-3">
+                            <span class="fw-bold">ETH</span>
+                            <span class="fw-normal text-danger mt-2 mt-md-0">3150,06 / - 0,85% USD</span>
+                        </div>
+                        <div
+                                class="list-group-item d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center py-3">
+                            <span class="fw-bold">SOL</span>
+                            <span class="fw-normal text-success mt-2 mt-md-0">206,06 USD / +1,65%</span>
+                        </div>
+                        <div
+                                class="list-group-item d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center py-3">
+                            <span class="fw-bold">ETH</span>
+                            <span class="fw-normal text-danger mt-2 mt-md-0">3150,06 / - 0,85% USD</span>
+                        </div>
+                        <div
+                                class="list-group-item d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center py-3">
                             <span class="fw-bold">SOL</span>
                             <span class="fw-normal text-success mt-2 mt-md-0">206,06 USD / +1,65%</span>
                         </div>
@@ -109,7 +147,8 @@
 
         </div>
     </div>
+</div>
 
-
+<script src="public/script.js"></script>
 </body>
 </html>
