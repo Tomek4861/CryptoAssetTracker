@@ -1,6 +1,6 @@
 import os
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import requests
 
@@ -35,7 +35,6 @@ def convert_to_days(value):
         "m": 30,
         "y": 365
     }
-
 
     number = int(value[:-1])
     unit = value[-1].lower()
