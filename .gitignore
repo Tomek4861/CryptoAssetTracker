@@ -25,5 +25,7 @@ dist-ssr
 test.html
 .env
 db.sqlite3
-venv
-__pycache__
+venv/
+__pycache__/
+*.pyc
+.prettierrc

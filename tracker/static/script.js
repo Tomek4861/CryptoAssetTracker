@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         labels: {
                             formatter: function (value, timestamp) {
                                 const date = new Date(timestamp);
-                                return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                                return date.toLocaleTimeString('en-US', {day: 'numeric', month: 'short', hour: '2-digit', });
                             },
                             style: {
                                 colors: '#ffffff',
