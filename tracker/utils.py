@@ -4,6 +4,33 @@ from datetime import datetime
 
 import requests
 
+COINS = {
+    "BTC": "Bitcoin",
+    "ETH": "Ethereum",
+    "SOL": "Solana",
+    "ADA": "Cardano",
+    "XRP": "Ripple",
+    "DOGE": "Dogecoin",
+    "DOT": "Polkadot",
+    "LTC": "Litecoin",
+    "UNI": "Uniswap",
+    "LINK": "Chainlink",
+
+}
+
+CURRENCIES = (
+    "USD",
+    "EUR",
+    "GBP",
+    "PLN",
+)
+
+DEFAULT_COIN_DATA = dict(coin="Bitcoin", currency="USD", timeframe="1w", chart_type="candlestick")
+
+
+def inverse_dict(d: dict) -> dict:
+    return {v: k for k, v in d.items()}
+
 
 @dataclass(frozen=True)
 class Candle:
@@ -28,7 +55,6 @@ class Candle:
 
 
 def convert_to_days(value):
-
     time_mapping = {
         "d": 1,
         "w": 7,
@@ -45,7 +71,9 @@ def convert_to_days(value):
         raise ValueError()
 
 
-def get_coin_prices(coin_name: str, currency: str, days: int) -> list:
+def get_coin_historical_prices(coin_name: str, currency: str, days: int) -> list:
+    if coin_name.upper() in COINS:  # check if coin is symbol instead of name
+        coin_name = COINS[coin_name.upper()]
     url = f"https://api.coingecko.com/api/v3/coins/{coin_name.lower()}/ohlc?vs_currency={currency}&days={days}"
     headers = {"accept": "application/json", "x-cg-demo-api-key": os.getenv("COINGECKO_API_KEY")}
     with requests.session() as s:
@@ -57,3 +85,13 @@ def get_coin_prices(coin_name: str, currency: str, days: int) -> list:
     return prices
 
 
+def get_coins_current_price(coins: list[str], currency: str) -> dict:
+    url = f"https://api.coingecko.com/api/v3/coins/markets?vs_currency={currency}&ids={','.join(coins)}&price_change_percentage=24h"
+    headers = {"accept": "application/json", "x-cg-demo-api-key": os.getenv("COINGECKO_API_KEY")}
+    with requests.session() as s:
+        response = s.get(url, headers=headers)
+        response.raise_for_status()
+    response_json = response.json()
+    # lub name .lower() w dict jako key
+    return {coin["symbol"]: dict(current_price=coin['current_price'], change_24h=coin['price_change_percentage_24h'])
+            for coin in response_json}

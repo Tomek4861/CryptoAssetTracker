@@ -79,3 +79,165 @@ document.addEventListener("DOMContentLoaded", function () {
 
     form.addEventListener("change", loadChart);
 });
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const addToWatchlistButton = document.getElementById("addToWatchlist");
+    const watchlistContainer = document.querySelector(".watchlist .list-group");
+    updateWatchlist();
+    addToWatchlistButton.addEventListener("click", addToWatchlist);
+    updateWatchlist();
+    setupWatchlistDeleteListener();
+//    refreshWatchListInterval(120);
+});
+
+
+
+function addToWatchlist(event) {
+    event.preventDefault();
+
+
+    const symbol = document.querySelector("#id_coin").value.toUpperCase();
+    const coin_name = document.querySelector("#id_coin option:checked").text;
+    console.log("Coin:", coin_name);
+    console.log("Symbol:", symbol);
+
+    fetch("/api/add-to-watchlist/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCSRFToken(),
+        },
+        body: JSON.stringify({
+            name: coin_name,
+            symbol: symbol,
+        }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                alert("Added to watchlist!");
+                updateWatchlist();
+            } else {
+                alert(data.message || "Failed to add to watchlist.");
+            }
+        })
+        .catch((error) => {
+            console.error("Error adding to watchlist:", error);
+        });
+}
+
+function getCSRFToken() {
+    return document.querySelector("[name=csrfmiddlewaretoken]").value;
+}
+function getCurrency() {
+    return document.querySelector("#id_currency").value;
+}
+
+function updateWatchlist() {
+    const watchlistContainer = document.querySelector(".watchlist .list-group");
+
+    fetch("/api/get-watchlist/")
+        .then((response) => response.json())
+
+        .then((watchlistData) => {
+            console.log("Watchlist data:", watchlistData);
+            const names = watchlistData.map(item => item.name.toLowerCase());
+//            console.log("Symbols:", symbols);
+            return fetch(`/api/get-prices/?coins[]=${names.join(',')}&currency=${getCurrency()}`)
+                .then(response => response.json())
+                .then(pricesData => {
+                    console.log("Prices data:", pricesData);
+                    return { watchlistData, pricesData };
+                });
+        })
+        .then(({ watchlistData, pricesData }) => {
+            watchlistContainer.innerHTML = "";
+
+            watchlistData.forEach((item) => {
+                const price = pricesData[item.symbol.toLowerCase()];
+                const priceDisplay = price ? `$${price.current_price.toFixed(2)}` : 'N/A';
+                const changeDisplay = price ? `${price.change_24h.toFixed(2)}%` : 'N/A';
+
+                const listItem = document.createElement("div");
+                listItem.classList.add(
+                    "list-group-item",
+                    "d-flex",
+                    "flex-column",
+                    "flex-lg-row",
+                    "justify-content-between",
+                    "align-items-start",
+                    "align-items-lg-center",
+                    "py-3"
+                );
+                listItem.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <div>
+                            <span class="fw-bold">${item.symbol.toUpperCase()}</span>
+                        </div>
+                        <div>
+                             <span class="fw-normal text-${price && price.change_24h >= 0 ? "success" : "danger"} mt-2 mt-md-0">
+                                ${priceDisplay} / ${changeDisplay}
+                            </span>
+                            <button class="btn p-0 border-0 remove-item-btn ms-1" data-symbol="${item.symbol.toUpperCase()}" title="Remove">
+                                <i class="bi bi-trash small-trash-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                watchlistContainer.appendChild(listItem);
+            });
+        })
+        .catch((error) => console.error("Error updating watchlist:", error));
+}
+
+function handleRemoveItem(symbol) {
+    fetch("/api/delete-from-watchlist/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCSRFToken(),
+        },
+        body: JSON.stringify({ symbol }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                alert("Item removed from watchlist!");
+                updateWatchlist();
+            } else {
+                alert(data.message || "Failed to remove item.");
+            }
+        })
+        .catch((error) => console.error("Error removing item:", error));
+}
+
+
+function handleWatchlistClick(event) {
+    console.log("Watchlist click:", event.target);
+    const removeButton = event.target.closest(".remove-item-btn");
+    console.log("Remove button:", removeButton);
+    if (removeButton) {
+        const symbol = removeButton.dataset.symbol;
+        console.log("Symbol:", symbol);
+        if (symbol) {
+            handleRemoveItem(symbol);
+        }
+    }
+}
+
+function refreshWatchListInterval(seconds) {
+    setInterval(() => {
+        console.log("Refreshing watchlist...");
+        updateWatchlist();
+    }, seconds * 1000);
+}
+function setupWatchlistDeleteListener() {
+    const watchlistContainer = document.querySelector(".watchlist .list-group");
+    watchlistContainer.addEventListener("click", handleWatchlistClick);
+
+}
+

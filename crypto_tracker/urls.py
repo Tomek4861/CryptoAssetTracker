@@ -24,8 +24,7 @@ from users.views import register
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', include('tracker.urls')),
-    # path("", include("users.urls")),
-    path('register/', register, name='register'),
+    path("", include("users.urls")),
     path("", include("django.contrib.auth.urls")),
 
 

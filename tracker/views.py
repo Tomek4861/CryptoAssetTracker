@@ -1,31 +1,23 @@
-from datetime import datetime
-from .utils import get_coin_prices, convert_to_days
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from tracker.forms import OptionsForm
-
-
-COINS = [
-    {"name": "Bitcoin", "symbol": "BTC"},
-    {"name": "Ethereum", "symbol": "ETH"},
-    {"name": "Solana", "symbol": "SOL"},
-
-]
+from tracker.utils import COINS, DEFAULT_COIN_DATA
+from .utils import get_coin_historical_prices, convert_to_days, get_coins_current_price
 
 
 # Create your views here.
 def home(request):
-    print(" sie")
-    initial_data = dict(coin="Bitcoin", currency="USD", timeframe="1w", chart_type="candlestick")
-    form = OptionsForm(request.GET or None, initial=initial_data)
+    form = OptionsForm(request.GET or None, initial=DEFAULT_COIN_DATA)
     if form.is_valid():
+        print("Form is valid")
         coin = form.cleaned_data["coin"]
-        _data = get_coin_prices(coin, "USD", convert_to_days(request.GET.get("timeframe", "1w")))
+        _data = get_coin_historical_prices(coin, DEFAULT_COIN_DATA['currency'], convert_to_days(
+            request.GET.get("timeframe", DEFAULT_COIN_DATA['timeframe'])))
     else:
-        print("Error" + str(form.errors))
-        print(form, form.is_valid())
+        print("Error", form.errors)
+        # print(form, form.is_valid())
         return render(request, 'index.html', {"form": form})
 
     context = {
@@ -40,11 +32,20 @@ def coin_list(request):
     return Response({"coins": COINS})
 
 
-
 @api_view(['GET'])
 def chart_data(request):
-    coin = request.GET.get("coin", "Bitcoin")
-    currency = request.GET.get("currency", "USD")
+    coin = request.GET.get("coin", DEFAULT_COIN_DATA["coin"])
+    currency = request.GET.get("currency", DEFAULT_COIN_DATA["currency"])
     print("OHO", request.GET)
-    price = get_coin_prices(coin, currency, convert_to_days(request.GET.get("timeframe", "1w")))
+    price = get_coin_historical_prices(COINS[coin], currency,
+                                       convert_to_days(request.GET.get("timeframe", DEFAULT_COIN_DATA["timeframe"])))
     return Response(price)
+
+
+@api_view(['GET'])
+def multiple_coins_price(request):
+    coins = request.GET.getlist("coins[]")
+    currency = request.GET.get("currency", DEFAULT_COIN_DATA["currency"])
+    print(coins)
+    prices = get_coins_current_price(coins, currency)
+    return Response(prices)
