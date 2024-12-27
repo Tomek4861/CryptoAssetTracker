@@ -1,0 +1,21 @@
+{
+  "name": "AssetPriceHelper",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.1",
+    "vite": "^5.1.6"
+  },
+  "dependencies": {
+    "apexcharts": "^4.1.0",
+    "chart.js": "^4.4.7",
+    "chartjs-chart-financial": "^0.2.1",
+    "toastify-js": "^1.12.0"
+  }
+}

@@ -25,7 +25,25 @@ CURRENCIES = (
     "PLN",
 )
 
-DEFAULT_COIN_DATA = dict(coin="Bitcoin", currency="USD", timeframe="1w", chart_type="candlestick")
+TIMEFRAMES = (
+    "1d",
+    "1w",
+    "1m",
+    "6m",
+    "1y",
+)
+
+
+
+CHART_COLORS = {
+    "Green Red": ["#089981", "#f23645"],
+    "Blue Purple": ["#0083c6", "#673ab7"],
+    "Orange Teal": ["#3C90EB", "#DF7D46"],
+    "Only White": ["#ffffff", "#ffffff"],
+}
+
+
+DEFAULT_COIN_DATA = dict(coin="Bitcoin", currency="USD", timeframe="1w", chart_color="Green Red")
 
 
 def inverse_dict(d: dict) -> dict:

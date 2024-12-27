@@ -2,16 +2,15 @@ import json
 
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
+from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view
 
+from .forms import LoginForm
 from .forms import RegisterForm
 from .models import WatchListItem
-from django.contrib.auth.views import LoginView
-from .forms import LoginForm
-
 
 
 # Create your views here.
@@ -37,6 +36,7 @@ def register(request):
 class CustomLoginView(LoginView):
     authentication_form = LoginForm
 
+
 @csrf_exempt
 @login_required
 def add_to_watchlist(request):
@@ -47,12 +47,11 @@ def add_to_watchlist(request):
         symbol = request_data['symbol']
         print(name, symbol)
         if name and symbol:
-            WatchListItem.objects.create(
-                name=name,
-                symbol=symbol,
-                user=request.user
-            )
-            return JsonResponse(dict(success=True, msg=f"{name} added to watchlist"), status=201)
+            try:
+                WatchListItem.objects.create(user=request.user, name=name, symbol=symbol)
+                return JsonResponse(dict(success=True, msg=f"{name} added to watchlist"), status=201)
+            except IntegrityError:
+                return JsonResponse({'success': False, 'message': 'Item already in watchlist'}, status=400)
         else:
             return JsonResponse(dict(success=False, msg="Invalid data"), status=400)
     else:
@@ -64,6 +63,7 @@ def get_watchlist(request):
     watchlist_items = WatchListItem.objects.filter(user=request.user)
     data = [{"name": item.name, "symbol": item.symbol} for item in watchlist_items]
     return JsonResponse(data, safe=False)
+
 
 @csrf_exempt
 @login_required

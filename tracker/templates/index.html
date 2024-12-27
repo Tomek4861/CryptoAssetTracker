@@ -20,6 +20,8 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="../static/style.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
 
 </head>
 <body>
@@ -69,8 +71,8 @@
               {{ form.timeframe }}
             </div>
             <div class="mb-3">
-              {{ form.chart_type.label_tag }}
-              {{ form.chart_type }}
+              {{ form.chart_color.label_tag }}
+              {{ form.chart_color }}
             </div>
             <div class="buttons mt-5">
               <button class="btn btn-secondary d-block mx-auto w-100 mb-3" id="addToWatchlist">Add To Watchlist</button>
@@ -112,5 +114,6 @@
 </div>
 
 <script src="../static/script.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
 </html>

@@ -1,97 +1,127 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("optionsForm");
-    const chartContainer = document.querySelector("#candlestickChart");
-    console.log("Script loaded");
-    console.log("Form:", form);
-    console.log("Chart container:", chartContainer);
-
-
-    function loadChart() {
-        const params = new URLSearchParams(new FormData(form)).toString();
-
-        fetch(`/api/chart/?${params}`)
-            .then(response => response.json())
-            .then(data => {
-                const options = {
-                    chart: {
-                        type: form.chart_type.value || 'candlestick',
-                    },
-                    series: [{
-                        data: data,
-                    }],
-                    xaxis: {
-                        type: 'datetime',
-                        tickAmount: 5,
-                        labels: {
-                            formatter: function (value, timestamp) {
-                                const date = new Date(timestamp);
-                                return date.toLocaleTimeString('en-US', {day: 'numeric', month: 'short', hour: '2-digit', });
-                            },
-                            style: {
-                                colors: '#ffffff',
-                                fontSize: '14px',
-                                fontFamily: 'Arial, sans-serif',
-                                fontWeight: 400,
-                            }
-                        }
-                    },
-                    yaxis: {
-                        tickAmount: 5,
-                        tooltip: {
-                            enabled: true
-                        },
-                        labels: {
-                            style: {
-                                colors: '#ffffff',
-                                fontSize: '14px',
-                                fontFamily: 'Arial, sans-serif',
-                                fontWeight: 400,
-                            }
-                        }
-                    },
-                    grid: {
-                        xaxis: {
-                            lines: {
-                                show: false
-                            }
-                        }
-                    },
-                    tooltip: {
-                        theme: 'dark',
-                        style: {
-                            fontSize: '12px',
-                            fontFamily: 'Arial, sans-serif'
-                        }
-                    }
-                };
-
-
-                chartContainer.innerHTML = "";
-                const chart = new ApexCharts(chartContainer, options);
-                chart.render();
-            })
-            .catch(error => console.error("Error loading chart data:", error));
-    }
-
-
+    const form = document.querySelector("#optionsForm");
+    form.addEventListener("change", loadChart);
     loadChart();
 
-
-    form.addEventListener("change", loadChart);
-});
-
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
     const addToWatchlistButton = document.getElementById("addToWatchlist");
     const watchlistContainer = document.querySelector(".watchlist .list-group");
     updateWatchlist();
     addToWatchlistButton.addEventListener("click", addToWatchlist);
     updateWatchlist();
     setupWatchlistDeleteListener();
-//    refreshWatchListInterval(120);
+//    refreshWatchListInterval(120); // Disabled cause API is trash
 });
+
+function showToast(message, success) {
+    const backgroundColor = success ? "#0D6EFD" : "#DC3545";
+        Toastify({
+        text: message,
+        duration: 3000,
+        position: "right",
+        style: {
+            background: backgroundColor,},
+        className: "rounded",
+        stopOnFocus: true,
+        }).showToast();
+
+}
+
+function calculateDateRange(dataArray) {
+    const millsInDay = 86400000; // 24 * 60 * 60 * 1000
+    const firstDate = new Date(dataArray[0].x);
+    const lastDate = new Date(dataArray[dataArray.length - 1].x);
+    const diffTime = Math.abs(lastDate - firstDate);
+    return diffDays = Math.ceil(diffTime / millsInDay);
+}
+
+function loadChart() {
+    const form = document.querySelector("#optionsForm");
+
+    const params = new URLSearchParams(new FormData(form)).toString();
+    const chartContainer = document.querySelector("#candlestickChart");
+
+    const whiteColor = '#ffffff';
+    const sizeOfFont = '14px';
+    const fontFamily = 'Arial, sans-serif';
+
+    fetch(`/api/chart/?${params}`)
+        .then(response => response.json())
+        .then(data => {
+            const [colorUp, colorDown] = form.chart_color.value.split(',');
+            daysRange = calculateDateRange(data);
+            const options = {
+                chart: {
+                    type: 'candlestick',
+                },
+
+                plotOptions: {
+                        candlestick: {
+                          colors: {
+                            upward: colorUp,
+                            downward: colorDown,
+                          }
+                        }
+                      },
+                series: [{
+                    data: data,
+                }],
+                xaxis: {
+                    type: 'datetime',
+                    tickAmount: 5,
+                    labels: {
+                        formatter: function (value, timestamp) {
+                            const date = new Date(timestamp);
+                            if (daysRange <= 2) {
+                                return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                            else {
+                                return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short'})
+                            };
+                        },
+                        style: {
+                            colors: whiteColor,
+                            fontSize: sizeOfFont,
+                            fontFamily: fontFamily,
+                            fontWeight: 400,
+                        }
+                    }
+                },
+                yaxis: {
+                    tickAmount: 5,
+                    tooltip: {
+                        enabled: true
+                    },
+                    labels: {
+                        style: {
+                            colors: whiteColor,
+                            fontSize: sizeOfFont,
+                            fontFamily: fontFamily,
+                            fontWeight: 400,
+                        }
+                    }
+                },
+                grid: {
+                    xaxis: {
+                        lines: {
+                            show: false
+                        }
+                    }
+                },
+                tooltip: {
+                    theme: 'dark',
+                    style: {
+                        fontSize: '12px',
+                        fontFamily: fontFamily,
+                    }
+                }
+            };
+
+
+            chartContainer.innerHTML = "";
+            const chart = new ApexCharts(chartContainer, options);
+            chart.render();
+        })
+        .catch(error => console.error("Error loading chart data:", error));
+}
 
 
 
@@ -101,8 +131,6 @@ function addToWatchlist(event) {
 
     const symbol = document.querySelector("#id_coin").value.toUpperCase();
     const coin_name = document.querySelector("#id_coin option:checked").text;
-    console.log("Coin:", coin_name);
-    console.log("Symbol:", symbol);
 
     fetch("/api/add-to-watchlist/", {
         method: "POST",
@@ -118,10 +146,14 @@ function addToWatchlist(event) {
         .then((response) => response.json())
         .then((data) => {
             if (data.success) {
-                alert("Added to watchlist!");
+                showToast(`Added ${coin_name} ${symbol} to watchlist!`, true);
+
                 updateWatchlist();
-            } else {
-                alert(data.message || "Failed to add to watchlist.");
+            } else if (data.message === "Item already in watchlist") {
+                showToast(`${coin_name} ${symbol} is already on your watchlist!`, false);
+            }
+            else {
+                showToast(`Failed to add ${coin_name} ${symbol} to watchlist! (${data.message})`, false);
             }
         })
         .catch((error) => {
@@ -143,13 +175,11 @@ function updateWatchlist() {
         .then((response) => response.json())
 
         .then((watchlistData) => {
-            console.log("Watchlist data:", watchlistData);
             const names = watchlistData.map(item => item.name.toLowerCase());
 //            console.log("Symbols:", symbols);
             return fetch(`/api/get-prices/?coins[]=${names.join(',')}&currency=${getCurrency()}`)
                 .then(response => response.json())
                 .then(pricesData => {
-                    console.log("Prices data:", pricesData);
                     return { watchlistData, pricesData };
                 });
         })
@@ -173,8 +203,8 @@ function updateWatchlist() {
                     "py-3"
                 );
                 listItem.innerHTML = `
-                    <div class="d-flex justify-content-between align-items-center w-100">
-                        <div>
+                    <div class="d-flex justify-content-between align-items-center w-100" >
+                        <div onclick="location.href='/?coin=${item.symbol.toUpperCase()}'">
                             <span class="fw-bold">${item.symbol.toUpperCase()}</span>
                         </div>
                         <div>
@@ -206,10 +236,10 @@ function handleRemoveItem(symbol) {
         .then((response) => response.json())
         .then((data) => {
             if (data.success) {
-                alert("Item removed from watchlist!");
+                showToast(`Removed ${symbol} from watchlist!`, true);
                 updateWatchlist();
             } else {
-                alert(data.message || "Failed to remove item.");
+                showToast(`Failed to remove ${symbol} from watchlist!`, false);
             }
         })
         .catch((error) => console.error("Error removing item:", error));
@@ -217,12 +247,9 @@ function handleRemoveItem(symbol) {
 
 
 function handleWatchlistClick(event) {
-    console.log("Watchlist click:", event.target);
     const removeButton = event.target.closest(".remove-item-btn");
-    console.log("Remove button:", removeButton);
     if (removeButton) {
         const symbol = removeButton.dataset.symbol;
-        console.log("Symbol:", symbol);
         if (symbol) {
             handleRemoveItem(symbol);
         }
@@ -240,4 +267,11 @@ function setupWatchlistDeleteListener() {
     watchlistContainer.addEventListener("click", handleWatchlistClick);
 
 }
+
+
+//TODO: mobile
+//TODO: Portfolio
+//TODO: Waluta w watchliscie
+//TODO: Cacheowanie resp
+//TODO: Komunikaty login/register?
 

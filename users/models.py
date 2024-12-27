@@ -10,7 +10,9 @@ class WatchListItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ('user', 'symbol')
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'symbol'], name='unique_user_symbol')
+        ]
 
     def __str__(self):
         return self.name
