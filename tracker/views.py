@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.core.cache import cache
 
 from tracker.forms import OptionsForm
-from tracker.utils import COINS, DEFAULT_COIN_DATA
+from tracker.utils import COINS, DEFAULT_COIN_DATA, CACHE_TIMEOUT
 from .utils import get_coin_historical_prices, convert_to_days, get_coins_current_price
 
 
@@ -17,7 +18,6 @@ def home(request):
             request.GET.get("timeframe", DEFAULT_COIN_DATA['timeframe'])))
     else:
         print("Error", form.errors)
-        # print(form, form.is_valid())
         return render(request, 'index.html', {"form": form})
 
     context = {
@@ -36,16 +36,30 @@ def coin_list(request):
 def chart_data(request):
     coin = request.GET.get("coin", DEFAULT_COIN_DATA["coin"])
     currency = request.GET.get("currency", DEFAULT_COIN_DATA["currency"])
-    print("OHO", request.GET)
-    price = get_coin_historical_prices(COINS[coin], currency,
-                                       convert_to_days(request.GET.get("timeframe", DEFAULT_COIN_DATA["timeframe"])))
-    return Response(price)
+    timeframe = request.GET.get("timeframe", DEFAULT_COIN_DATA["timeframe"])
+    cache_key = f"{coin}_{currency}_{timeframe}"
+    cached_data = cache.get(cache_key)
+    if cached_data:
+        print(f"Cache Hit for {cache_key}")
+        return Response(cached_data)
+    else:
+        print("Cache Miss")
+        data = get_coin_historical_prices(coin, currency, convert_to_days(timeframe))
+        cache.set(cache_key, data, CACHE_TIMEOUT)
+        return Response(data)
 
 
 @api_view(['GET'])
 def multiple_coins_price(request):
     coins = request.GET.getlist("coins[]")
     currency = request.GET.get("currency", DEFAULT_COIN_DATA["currency"])
-    print(coins)
-    prices = get_coins_current_price(coins, currency)
-    return Response(prices)
+    cache_key = f"{currency}_{'_'.join(coins)}_{currency}"
+    cached_data = cache.get(cache_key)
+    if cached_data:
+        print(f"Cache Hit for {cache_key}")
+        return Response(cached_data)
+    else:
+        print("Cache Miss")
+        prices = get_coins_current_price(coins, currency)
+        cache.set(cache_key, prices, CACHE_TIMEOUT)
+        return Response(prices)

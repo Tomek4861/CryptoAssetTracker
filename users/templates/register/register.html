@@ -27,27 +27,38 @@
   <div class="card account w-50 p-3">
     <div class="card-header"><h3 class="text-center fw-bold">Account Creation</h3></div>
     <div class="card-body">
+      <div class="container-fluid mt-1 px-0">
+        {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-error alert-dismissible fade show w-100 px-0" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close btn-light" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+
       <form method="post" class="form-group">
         {% csrf_token %}
         <div class="mb-3">
-            {{ form.username.label_tag }}
-            {{ form.username }}
+          {{ form.username.label_tag }}
+          {{ form.username }}
         </div>
         <div class="mb-3">
-            {{ form.password1.label_tag }}
-            {{ form.password1 }}
+          {{ form.password1.label_tag }}
+          {{ form.password1 }}
         </div>
         <div class="mb-4">
-            {{ form.password2.label_tag }}
-            {{ form.password2 }}
+          {{ form.password2.label_tag }}
+          {{ form.password2 }}
         </div>
-        <button type="submit"  class="btn btn-primary btn-lg d-block mx-auto px-4 mb-5 mt-3">Create Account</button>
+        <button type="submit" class="btn btn-primary btn-lg d-block mx-auto px-4 mb-5 mt-3">Create Account</button>
 
       </form>
 
 
       <div class="d-flex flex-row align-items-center justify-content-between">Already have an account? <strong><a
-              href="login.html">Log in here</a></strong></div>
+        href="{% url 'login' %}">Log in here</a></strong></div>
     </div>
 
   </div>

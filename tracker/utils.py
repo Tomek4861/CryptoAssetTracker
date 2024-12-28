@@ -4,6 +4,9 @@ from datetime import datetime
 
 import requests
 
+
+CACHE_TIMEOUT = 60 * 5
+
 COINS = {
     "BTC": "Bitcoin",
     "ETH": "Ethereum",

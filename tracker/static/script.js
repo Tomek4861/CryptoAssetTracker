@@ -27,11 +27,11 @@ function showToast(message, success) {
 }
 
 function calculateDateRange(dataArray) {
-    const millsInDay = 86400000; // 24 * 60 * 60 * 1000
+    const millisInDay = 86400000; // 24 * 60 * 60 * 1000
     const firstDate = new Date(dataArray[0].x);
     const lastDate = new Date(dataArray[dataArray.length - 1].x);
     const diffTime = Math.abs(lastDate - firstDate);
-    return diffDays = Math.ceil(diffTime / millsInDay);
+    return diffDays = Math.ceil(diffTime / millisInDay);
 }
 
 function loadChart() {
@@ -272,6 +272,5 @@ function setupWatchlistDeleteListener() {
 //TODO: mobile
 //TODO: Portfolio
 //TODO: Waluta w watchliscie
-//TODO: Cacheowanie resp
 //TODO: Komunikaty login/register?
 

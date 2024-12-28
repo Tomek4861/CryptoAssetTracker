@@ -1,5 +1,6 @@
 import json
 
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
@@ -24,8 +25,7 @@ def register(request):
             login(request, user)
             return redirect('/')
         else:
-            print("Error", form.errors)
-            form = RegisterForm()
+            messages.error(request, "Error during registration. Please try again.")
 
     else:
         form = RegisterForm()
@@ -35,6 +35,11 @@ def register(request):
 
 class CustomLoginView(LoginView):
     authentication_form = LoginForm
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Invalid username or password.")
+        return super().form_invalid(form)
+
 
 
 @csrf_exempt
