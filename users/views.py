@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 
+from tracker.utils import COINS
 from .forms import LoginForm
 from .forms import RegisterForm
 from .models import WatchListItem, PortfolioItem
@@ -41,7 +42,6 @@ class CustomLoginView(LoginView):
         return super().form_invalid(form)
 
 
-
 @csrf_exempt
 @login_required
 def add_to_watchlist(request):
@@ -52,14 +52,14 @@ def add_to_watchlist(request):
         symbol = request_data['symbol']
         print(name, symbol)
         if not name or not symbol:
-            return JsonResponse(dict(success=False, msg="Invalid data"), status=400)
+            return JsonResponse(dict(success=False, message="Invalid data"), status=400)
         try:
             WatchListItem.objects.create(user=request.user, name=name, symbol=symbol)
-            return JsonResponse(dict(success=True, msg=f"{name} added to watchlist"), status=201)
+            return JsonResponse(dict(success=True, message=f"{name} added to watchlist"), status=201)
         except IntegrityError:
             return JsonResponse({'success': False, 'message': 'Item already in watchlist'}, status=400)
     else:
-        return JsonResponse(dict(success=False, msg="Invalid request method"), status=405)
+        return JsonResponse(dict(success=False, message="Invalid request method"), status=405)
 
 
 @login_required
@@ -77,14 +77,14 @@ def delete_from_watchlist(request):
         print(request_data)
         symbol = request_data['symbol']
         if not symbol:
-            return JsonResponse(dict(success=False, msg="Invalid data"), status=400)
+            return JsonResponse(dict(success=False, message="Invalid data"), status=400)
         WatchListItem.objects.filter(
             symbol=symbol,
             user=request.user
         ).delete()
-        return JsonResponse(dict(success=True, msg=f"{symbol} removed from watchlist"), status=201)
+        return JsonResponse(dict(success=True, message=f"{symbol} removed from watchlist"), status=201)
     else:
-        return JsonResponse(dict(success=False, msg="Invalid request method"), status=405)
+        return JsonResponse(dict(success=False, message="Invalid request method"), status=405)
 
 
 @csrf_exempt
@@ -96,16 +96,19 @@ def add_to_portfolio(request):
         name = request_data['name']
         symbol = request_data['symbol']
         amount = request_data['amount']
-        print(name, symbol)
-        if not name or not symbol or amount <= 0:
-            return JsonResponse(dict(success=False, msg="Invalid data"), status=400)
+        print(name, symbol, amount)
+        if not name or not symbol:
+            return JsonResponse(dict(success=False, message="Invalid data"), status=400)
+        if amount <= 0:
+            return JsonResponse(dict(success=False, message="Invalid amount"), status=400)
         try:
-            PortfolioItem.objects.create(user=request.user, name=name, symbol=symbol, quantity=amount)
-            return JsonResponse(dict(success=True, msg=f"{amount} {symbol} added to portfolio"), status=201)
+            PortfolioItem.objects.create(user=request.user, name=name, symbol=symbol, amount=amount)
+            return JsonResponse(dict(success=True, message=f"{amount} {symbol} added to portfolio"), status=201)
         except IntegrityError:
-            return JsonResponse({'success': False, 'message': 'Item already in watchlist'}, status=400)
+            return JsonResponse(dict(success=False, message='Item already in portfolio'), status=400)
     else:
-        return JsonResponse(dict(success=False, msg="Invalid request method"), status=405)
+        return JsonResponse(dict(success=False, message="Invalid request method"), status=405)
+
 
 @csrf_exempt
 @login_required
@@ -116,20 +119,20 @@ def update_amount_portfolio(request):
         amount = request_data['amount']
         print(symbol, amount)
         if not symbol or amount < 0:
-            return JsonResponse(dict(success=False, msg="Invalid data"), status=400)
+            return JsonResponse(dict(success=False, message="Invalid data"), status=400)
         if amount == 0:
             PortfolioItem.objects.filter(symbol=symbol, user=request.user).delete()
-            return JsonResponse(dict(success=True, msg=f"{symbol} removed from portfolio"), status=200)
+            return JsonResponse(dict(success=True, message=f"{symbol} removed from portfolio"), status=200)
         try:
             PortfolioItem.objects.filter(
                 symbol=symbol,
                 user=request.user
             ).update(amount=amount)
-            return JsonResponse(dict(success=True, msg=f"{symbol} amount change {amount}"), status=201)
+            return JsonResponse(dict(success=True, message=f"{symbol} amount change {amount}"), status=201)
         except IntegrityError:
             return JsonResponse({'success': False, 'message': 'Integrity Error'}, status=400)
     else:
-        return JsonResponse(dict(success=False, msg="Invalid request method"), status=405)
+        return JsonResponse(dict(success=False, message="Invalid request method"), status=405)
 
 
 def delete_from_portfolio(request):
@@ -142,17 +145,23 @@ def delete_from_portfolio(request):
                     symbol=symbol,
                     user=request.user
                 ).delete()
-                return JsonResponse(dict(success=True, msg=f"{symbol} removed from portfolio"), status=201)
+                return JsonResponse(dict(success=True, message=f"{symbol} removed from portfolio"), status=201)
             except IntegrityError:
                 return JsonResponse({'success': False, 'message': 'Integrity Error'}, status=400)
         else:
-            return JsonResponse(dict(success=False, msg="Invalid data"), status=400)
+            return JsonResponse(dict(success=False, message="Invalid data"), status=400)
     else:
-        return JsonResponse(dict(success=False, msg="Invalid request method"), status=405)
+        return JsonResponse(dict(success=False, message="Invalid request method"), status=405)
 
 
 @login_required
 def get_portfolio(request):
-    portfolio_items = WatchListItem.objects.filter(user=request.user)
+    portfolio_items = PortfolioItem.objects.filter(user=request.user)
     data = [{"name": item.name, "symbol": item.symbol, "amount": item.amount} for item in portfolio_items]
     return JsonResponse(data, safe=False)
+
+
+@login_required
+def get_portfolio_page(request):
+    all_coins_list = list(COINS.items())
+    return render(request, 'portfolio/portfolio.html', dict(coins=all_coins_list))

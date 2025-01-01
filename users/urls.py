@@ -13,5 +13,6 @@ urlpatterns = [
     path('api/get-portfolio/', views.get_portfolio, name='get_portfolio'),
     path('api/delete-from-portfolio/', views.delete_from_portfolio, name='delete_from_portfolio'),
     path('api/update-asset-portfolio/', views.update_amount_portfolio, name='update_amount_portfolio'),
+    path("portfolio/", views.get_portfolio_page, name="portfolio"),
 
 ]

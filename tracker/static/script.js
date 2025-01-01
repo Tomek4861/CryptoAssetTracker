@@ -5,12 +5,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const addToWatchlistButton = document.getElementById("addToWatchlist");
     const watchlistContainer = document.querySelector(".watchlist .list-group");
-    updateWatchlist();
-    addToWatchlistButton.addEventListener("click", addToWatchlist);
-    updateWatchlist();
-    setupWatchlistDeleteListener();
+    if (isLoggedIn()) {
+        updateWatchlist();
+        addToWatchlistButton.addEventListener("click", addToWatchlist);
+        setupWatchlistDeleteListener();
+    } else {
+        addToWatchlistButton.addEventListener("click", redirectToLogin);
+    }
 //    refreshWatchListInterval(120); // Disabled cause API is trash
 });
+
+function isLoggedIn() {
+    return document.getElementById("logged-in-user") !== null;
+}
 
 function showToast(message, success) {
     const backgroundColor = success ? "#0D6EFD" : "#DC3545";
@@ -124,6 +131,10 @@ function loadChart() {
 }
 
 
+function redirectToLogin() {
+    event.preventDefault();
+    window.location.href = "/login/";
+}
 
 function addToWatchlist(event) {
     event.preventDefault();
@@ -272,5 +283,5 @@ function setupWatchlistDeleteListener() {
 //TODO: mobile
 //TODO: Portfolio
 //TODO: Waluta w watchliscie
-//TODO: Komunikaty login/register?
+
 

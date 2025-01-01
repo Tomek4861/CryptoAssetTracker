@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from tracker.utils import inverse_dict, COINS, CURRENCIES, CHART_COLORS, TIMEFRAMES
+
 
 
 class RegisterForm(UserCreationForm):
@@ -35,3 +37,13 @@ class LoginForm(AuthenticationForm):
     class Meta:
         model = User
         fields = ["username", "password"]
+
+
+
+# class PortfolioForm(forms.Form):
+#     COINS_LIST = list(COINS.items())
+#
+#     coin = forms.ChoiceField(choices=COINS_LIST, label="Coin", required=True, widget=forms.Select(attrs={"class": "form-select mb-3"}))
+#     amount = forms.FloatField(label="Amount", widget=forms.NumberInput(attrs={"class": "form-control mb-3"}) )
+#
+#

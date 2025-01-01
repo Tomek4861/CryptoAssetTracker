@@ -86,3 +86,44 @@ button:active {
     color: #ffffff;
     font-size: 20px;
 }
+
+
+
+#portfolio-summary-container {
+    background-color: #1f1f1f;
+    display: inline-block;
+}
+
+
+.glow-red {
+    color: #f54242;
+    text-shadow: 0px 0px 10px #f54242, 0px 0px 30px #f54242;
+}
+.glow-green {
+    color: #42f590;
+    text-shadow: 0px 0px 10px #42f590, 0px 0px 30px #42f590;
+}
+
+.fancy-red {
+    color: #f54242;
+}
+.fancy-green {
+    color: #42f590;
+}
+
+#portfolio-value {
+    font-size: 3rem;
+}
+
+#user-portfolio  {
+    background-color: #1f1f1f;
+}
+
+.table-custom .row {
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.table-custom .row:hover {
+    background-color: #292929;
+}
