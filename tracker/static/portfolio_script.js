@@ -93,27 +93,29 @@ function updatePortfolio() {
                 const listItem = document.createElement("div");
                 listItem.classList.add(
                     "row",
-                    "border-bottom",
+                    "table-row",
                     "py-2"
                 );
                 listItem.innerHTML = `
-                                            <div class="col-1">${index + 1}</div>
-                                            <div class="col-2">${item.symbol.toUpperCase()}</div>
-                                            <div class="col-2  d-flex align-items-center">
-                                                ${item.amount.toFixed(2)}
-                                                <button class="btn p-0 border-0 remove-item-btn ms-3" data-symbol="${item.symbol.toUpperCase()}" title="Remove">
-                                                    <i class="bi bi-pencil small-trash-icon mx-0 my-0"></i>
-                                                 </button>
-                                            </div>
-                                            <div class="col-3">$${totalCoinValue.toFixed(2)}</div>
-                                            <div class="col-3 text- text-${priceDict && priceDict.change_24h >= 0 ? "success" : "danger"}">${changePrice.toFixed(2)} $ / ${changePercent.toFixed(2)}%</div>
-                                            <div class="col-1 text-center d-flex align-items-center">
-                                                <i class="bi bi-graph-up mx-2" onclick="location.href='/?coin=${item.symbol.toUpperCase()}"></i>
-                                                <button class="btn p-0 border-0 remove-item-btn ms-1" data-symbol="${item.symbol.toUpperCase()}" title="Remove">
-                                                    <i class="bi bi-trash small-trash-icon mx-0 my-0"></i>
-                                                 </button>
-                                            </div>
-                                        `;
+                                    <div class="col-1">${index + 1}</div>
+                                    <div class="col-2">${item.symbol.toUpperCase()}</div>
+                                    <div class="col-2  d-flex align-items-center">
+                                        ${item.amount.toFixed(2)}
+                                    </div>
+                                    <div class="col-3">$${totalCoinValue.toFixed(2)}</div>
+                                    <div class="col-3 text- text-${priceDict && priceDict.change_24h >= 0 ? "success" : "danger"}">${changePrice.toFixed(2)} $ / ${changePercent.toFixed(2)}%</div>
+                                    <div class="col-1 text-center d-flex align-items-center portfolio-action-buttons">
+                                        <button class="btn p-0 border-0 ms-1" title="Edit">
+                                            <i class="bi bi-pencil mx-0 my-0 action-icon"></i>
+                                        </button>
+                                        <button class="btn p-0 border-0 ms-1" title="GoToChart" onclick="location.href='/?coin=${item.symbol.toUpperCase()}'">
+                                            <i class="bi bi-graph-up mx-2 action-icon" ></i>
+                                        </button>
+                                        <button class="btn p-0 border-0 remove-item-btn ms-1" data-symbol="${item.symbol.toUpperCase()}" title="Remove">
+                                                <i class="bi bi-trash mx-0 my-0 action-icon"></i>
+                                        </button>
+                                    </div>
+                                `;
                 portfolioRowsContainer.append(listItem)
 
             });

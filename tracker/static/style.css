@@ -127,3 +127,10 @@ button:active {
 .table-custom .row:hover {
     background-color: #292929;
 }
+.action-icon {
+    color: #fff;
+}
+
+.table-row {
+    border-bottom: 1px solid #3b3b3b;
+}

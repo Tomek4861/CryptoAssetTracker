@@ -223,7 +223,7 @@ function updateWatchlist() {
                                 ${priceDisplay} / ${changeDisplay}
                             </span>
                             <button class="btn p-0 border-0 remove-item-btn ms-1" data-symbol="${item.symbol.toUpperCase()}" title="Remove">
-                                <i class="bi bi-trash small-trash-icon"></i>
+                                <i class="bi bi-trash action-icon"></i>
                             </button>
                         </div>
                     </div>
@@ -280,8 +280,7 @@ function setupWatchlistDeleteListener() {
 }
 
 
-//TODO: mobile
-//TODO: Portfolio
-//TODO: Waluta w watchliscie
+//TODO: mobile view
+//TODO: code cleanup
 
 
