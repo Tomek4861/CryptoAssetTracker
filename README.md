@@ -34,15 +34,16 @@ cryptocurrency prices through candlestick charts, manage their watchlists, and m
 
 ### Home Page with Candlestick Charts
 
-![Home Page]()
+![Home Page](https://github.com/user-attachments/assets/0595234d-ecf7-4d00-83a9-46e55e65587a)
 
 ### Portfolio Management
 
-![Portfolio]()
+![Portfolio](![image](https://github.com/user-attachments/assets/fdfd1d07-c72a-4ec9-b766-5c6aed64f448))
 
-### Login & Register Page
+### Login/Register Page
 
-![Login & Register]()
+![Login/Register](![image](https://github.com/user-attachments/assets/04d9509e-f42a-40ee-b5d9-5fcb93f2b6d5)
+)
 
 ## Installation and Setup
 
