@@ -83,7 +83,7 @@ function updatePortfolio() {
                 const priceDict = pricesData[item.symbol.toLowerCase()];
                 const totalCoinValue = item.amount * priceDict.current_price;
                 totalPortfolioValue += totalCoinValue;
-                const changePrice = totalCoinValue * priceDict.change_24h/100;
+                const changePrice = totalCoinValue * priceDict.change_24h / 100;
                 totalPortfolioChange += changePrice;
                 const changePercent = priceDict.change_24h;
                 const amount = item.amount;
@@ -102,9 +102,9 @@ function updatePortfolio() {
                                     <div class="col-2  d-flex align-items-center">
                                         ${item.amount.toFixed(2)}
                                     </div>
-                                    <div class="col-3">$${totalCoinValue.toFixed(2)}</div>
+                                    <div class="col-2">$${totalCoinValue.toFixed(2)}</div>
                                     <div class="col-3 text- text-${priceDict && priceDict.change_24h >= 0 ? "success" : "danger"}">${changePrice.toFixed(2)} $ / ${changePercent.toFixed(2)}%</div>
-                                    <div class="col-1 text-center d-flex align-items-center portfolio-action-buttons">
+                                    <div class="col-2 text-center d-flex align-items-center justify-content-center portfolio-action-buttons">
                                         <button class="btn p-0 border-0 ms-1" title="Edit">
                                             <i class="bi bi-pencil mx-0 my-0 action-icon"></i>
                                         </button>
@@ -123,14 +123,13 @@ function updatePortfolio() {
             const portfolioChangeValue = document.getElementById("portfolio-change-value");
             const portfolioChangePercent = document.getElementById("portfolio-change-percent");
 
-            portfolioValueBanner.textContent = `${totalPortfolioValue.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}$`;
-            portfolioValueBanner.className = `text-glow fw-bold ${
-              totalPortfolioChange >= 0 ? "glow-green" : "glow-red"
-            }`;
+            portfolioValueBanner.textContent = `${totalPortfolioValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}$`;
+            portfolioValueBanner.className = `text-glow fw-bold ${totalPortfolioChange >= 0 ? "glow-green" : "glow-red"
+                }`;
             portfolioChangeValue.textContent = `${totalPortfolioChange.toFixed(2)} $`;
             portfolioChangePercent.textContent = ` / ${calculatePortfolioChangePercent(
-              totalPortfolioValue,
-              totalPortfolioChange
+                totalPortfolioValue,
+                totalPortfolioChange
             ).toFixed(2)}%`;
 
             portfolioChangeValue.className = totalPortfolioChange >= 0 ? "fancy-green" : "fancy-red";

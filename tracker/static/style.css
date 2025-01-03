@@ -63,6 +63,7 @@ button:active {
     color: #fff;
     max-width: 470px;
     margin-top: 20vh;
+    transform: translateY(-10%);
 }
 
 
