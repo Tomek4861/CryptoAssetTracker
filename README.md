@@ -26,7 +26,7 @@ cryptocurrency prices through candlestick charts, manage their watchlists, and m
 ## Technologies Used
 
 - **Backend**: Django (with Django Rest Framework for APIs)
-- **Frontend**: Bootstrap, JavaScript, and ApexCharts
+- **Frontend**: CSS, Bootstrap, JavaScript, and ApexCharts
 - **Database**: SQLite (default)
 - **Third-party APIs**: CoinGecko for cryptocurrency data
 
