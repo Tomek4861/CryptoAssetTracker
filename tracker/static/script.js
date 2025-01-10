@@ -213,21 +213,39 @@ function updateWatchlist() {
                     "align-items-lg-center",
                     "py-3"
                 );
-                listItem.innerHTML = `
-                    <div class="d-flex justify-content-between align-items-center w-100" >
-                        <div onclick="location.href='/?coin=${item.symbol.toUpperCase()}'">
-                            <span class="fw-bold">${item.symbol.toUpperCase()}</span>
-                        </div>
-                        <div>
-                             <span class="fw-normal text-${price && price.change_24h >= 0 ? "success" : "danger"} mt-2 mt-md-0">
-                                ${priceDisplay} / ${changeDisplay}
-                            </span>
-                            <button class="btn p-0 border-0 remove-item-btn ms-1" data-symbol="${item.symbol.toUpperCase()}" title="Remove">
-                                <i class="bi bi-trash action-icon"></i>
-                            </button>
-                        </div>
-                    </div>
-                `;
+                const listItemDiv = document.createElement("div");
+
+                listItemDiv.classList.add("d-flex", "justify-content-between", "align-items-center", "w-100");
+                const listItemSymbol = document.createElement("div");
+                listItemSymbol.onclick = function () { location.href = "/?coin=" + item.symbol.toUpperCase(); };
+                const symbolText = document.createElement("span");
+                symbolText.classList.add("fw-bold");
+                symbolText.textContent = item.symbol.toUpperCase();
+                listItemSymbol.appendChild(symbolText);
+
+                listItemDiv.appendChild(listItemSymbol);
+
+                const listItemPrice = document.createElement("div");
+                const priceText = document.createElement("span");
+                priceText.classList.add(
+                     "fw-normal",
+                    "text-" + (price && price.change_24h >= 0 ? "success" : "danger"),
+                    "mt-2",
+                    "mt-md-0"
+                    );
+                priceText.textContent = `${priceDisplay} / ${changeDisplay}`;
+                listItemPrice.appendChild(priceText);
+
+                listItemDiv.appendChild(listItemPrice);
+
+
+
+                listItem.appendChild(listItemDiv);
+
+
+                listItem.appendChild(removeButton);
+
+
 
                 watchlistContainer.appendChild(listItem);
             });
