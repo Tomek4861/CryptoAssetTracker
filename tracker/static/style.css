@@ -1,43 +1,56 @@
+:root {
+    --font-family: Arial, sans-serif;
+    --color-bg: #121212;
+    --color-bg-secondary: #1f1f1f;
+    --color-text: #fff;
+    --color-border: #3b3b3b;
+    --color-hover-bg: #292929;
+    --color-red-fancy: #f54242;
+    --color-green-fancy: #42f590;
+}
+
+
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: var(--font-family);
     margin: 0;
     padding: 0;
-    background-color: #121212;
-    color: #fff;
+    background-color: var(--color-bg);
+    color: var(--color-text);
 }
 
 .options {
-    background-color: #1f1f1f;
-    color: #fff;
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text);
 }
 
 
 .options select,
 .form-control {
-    background-color: #121212;
-    color: #fff;
-    border: 1px solid #3b3b3b;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
 
 }
 
 .form-control:focus,
 .form-control::placeholder {
-    background-color: #121212;
-    color: #fff;
+    background-color: var(--color-bg);
+    color: var(--color-text);
 }
 
 
 
 .list-group-item {
-    background-color: #1f1f1f;
-    color: #fff;
-    border: 1px solid #3b3b3b;
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
     border-radius: 0.5rem;
     transition: background-color 0.3s ease;
 }
 
 .list-group-item:hover {
-    background-color: #292929;
+    background-color: var(--color-hover-bg);
 }
 
 .list-group-item span {
@@ -59,8 +72,8 @@ button:active {
 
 .card.login,
 .card.account {
-    background-color: #1f1f1f;
-    color: #fff;
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text);
     max-width: 470px;
     margin-top: 20vh;
     transform: translateY(-10%);
@@ -69,47 +82,37 @@ button:active {
 
 
 #candlestickChart {
-    background-color: #1f1f1f;
+    background-color: var(--color-bg-secondary);
 }
 
-.small-trash-icon {
-    font-size: 12px;
-    color: #ffffff;
-}
-
-
-.small-trash-icon:hover {
-    color: #ffffff;
-    transform: scale(1.3)
-}
 
 .btn-close {
-    color: #ffffff;
+    color: var(--color-text);
     font-size: 20px;
 }
 
 
 
 #portfolio-summary-container {
-    background-color: #1f1f1f;
+    background-color: var(--color-bg-secondary);
     display: inline-block;
 }
 
 
 .glow-red {
-    color: #f54242;
-    text-shadow: 0px 0px 10px #f54242, 0px 0px 30px #f54242;
+    color: var(--color-red-fancy);
+    text-shadow: 0px 0px 10px var(--color-red-fancy), 0px 0px 30px var(--color-red-fancy);
 }
 .glow-green {
-    color: #42f590;
-    text-shadow: 0px 0px 10px #42f590, 0px 0px 30px #42f590;
+    color: var(--color-green-fancy);
+    text-shadow: 0px 0px 10px var(--color-green-fancy), 0px 0px 30px var(--color-green-fancy);
 }
 
 .fancy-red {
-    color: #f54242;
+    color: var(--color-red-fancy);
 }
 .fancy-green {
-    color: #42f590;
+    color: var(--color-green-fancy);
 }
 
 #portfolio-value {
@@ -117,7 +120,7 @@ button:active {
 }
 
 #user-portfolio  {
-    background-color: #1f1f1f;
+    background-color: var(--color-bg-secondary);
 }
 
 .table-custom .row {
@@ -126,12 +129,12 @@ button:active {
 }
 
 .table-custom .row:hover {
-    background-color: #292929;
+    background-color: var(--color-hover-bg);
 }
 .action-icon {
-    color: #fff;
+    color: var(--color-text);
 }
 
 .table-row {
-    border-bottom: 1px solid #3b3b3b;
+    border-bottom: 1px solid var(--color-border);
 }

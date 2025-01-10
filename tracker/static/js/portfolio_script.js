@@ -1,25 +1,13 @@
+import { getCSRFToken, showToast, calculatePortfolioChangePercent } from "./utils.js";
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const addCoinButton = document.getElementById("add-coin-btn");
     updatePortfolio();
     addCoinButton.addEventListener("click", addToPortfolio);
     const portfolioRowsContainer = document.getElementById("portfolio-rows");
-    portfolioRowsContainer.addEventListener("click", handleWatchlistClick);
+    portfolioRowsContainer.addEventListener("click", handlePortfolioClick);
 });
-
-function showToast(message, success) {
-    const backgroundColor = success ? "#0D6EFD" : "#DC3545";
-    Toastify({
-        text: message,
-        duration: 3000,
-        position: "right",
-        style: {
-            background: backgroundColor,
-        },
-        className: "rounded",
-        stopOnFocus: true,
-    }).showToast();
-
-}
 
 
 function addToPortfolio(event) {
@@ -274,7 +262,7 @@ function saveNewAmount(newAmount, symbol, amountColumn) {
 }
 
 
-function handleWatchlistClick(event) {
+function handlePortfolioClick(event) {
     const removeButton = event.target.closest(".remove-item-btn");
     if (removeButton) {
         const symbol = removeButton.dataset.symbol;
@@ -307,11 +295,5 @@ function handleRemoveItem(symbol) {
 }
 
 
-function getCSRFToken() {
-    return document.querySelector("[name=csrfmiddlewaretoken]").value;
-}
 
-function calculatePortfolioChangePercent(totalPortValue, totalPortChange) {
-    return totalPortValue === 0 ? 0 : (totalPortChange / totalPortValue) * 100;
-}
 

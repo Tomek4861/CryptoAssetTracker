@@ -1,3 +1,7 @@
+import { loadChart } from "./chart.js";
+import { isLoggedIn, getCSRFToken, redirectToLogin, getCurrency, showToast  } from "./utils.js";
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("#optionsForm");
     form.addEventListener("change", loadChart);
@@ -15,126 +19,8 @@ document.addEventListener("DOMContentLoaded", function () {
 //    refreshWatchListInterval(120); // Disabled cause API is trash
 });
 
-function isLoggedIn() {
-    return document.getElementById("logged-in-user") !== null;
-}
-
-function showToast(message, success) {
-    const backgroundColor = success ? "#0D6EFD" : "#DC3545";
-        Toastify({
-        text: message,
-        duration: 3000,
-        position: "right",
-        style: {
-            background: backgroundColor,},
-        className: "rounded",
-        stopOnFocus: true,
-        }).showToast();
-
-}
-
-function calculateDateRange(dataArray) {
-    const millisInDay = 86400000; // 24 * 60 * 60 * 1000
-    const firstDate = new Date(dataArray[0].x);
-    const lastDate = new Date(dataArray[dataArray.length - 1].x);
-    const diffTime = Math.abs(lastDate - firstDate);
-    return diffDays = Math.ceil(diffTime / millisInDay);
-}
-
-function loadChart() {
-    const form = document.querySelector("#optionsForm");
-
-    const params = new URLSearchParams(new FormData(form)).toString();
-    const chartContainer = document.querySelector("#candlestickChart");
-
-    const whiteColor = '#ffffff';
-    const sizeOfFont = '14px';
-    const fontFamily = 'Arial, sans-serif';
-
-    fetch(`/api/chart/?${params}`)
-        .then(response => response.json())
-        .then(data => {
-            const [colorUp, colorDown] = form.chart_color.value.split(',');
-            daysRange = calculateDateRange(data);
-            const options = {
-                chart: {
-                    type: 'candlestick',
-                },
-
-                plotOptions: {
-                        candlestick: {
-                          colors: {
-                            upward: colorUp,
-                            downward: colorDown,
-                          }
-                        }
-                      },
-                series: [{
-                    data: data,
-                }],
-                xaxis: {
-                    type: 'datetime',
-                    tickAmount: 5,
-                    labels: {
-                        formatter: function (value, timestamp) {
-                            const date = new Date(timestamp);
-                            if (daysRange <= 2) {
-                                return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
-                            else {
-                                return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short'})
-                            };
-                        },
-                        style: {
-                            colors: whiteColor,
-                            fontSize: sizeOfFont,
-                            fontFamily: fontFamily,
-                            fontWeight: 400,
-                        }
-                    }
-                },
-                yaxis: {
-                    tickAmount: 5,
-                    tooltip: {
-                        enabled: true
-                    },
-                    labels: {
-                        style: {
-                            colors: whiteColor,
-                            fontSize: sizeOfFont,
-                            fontFamily: fontFamily,
-                            fontWeight: 400,
-                        }
-                    }
-                },
-                grid: {
-                    xaxis: {
-                        lines: {
-                            show: false
-                        }
-                    }
-                },
-                tooltip: {
-                    theme: 'dark',
-                    style: {
-                        fontSize: '12px',
-                        fontFamily: fontFamily,
-                    }
-                }
-            };
 
 
-            chartContainer.innerHTML = "";
-            const chart = new ApexCharts(chartContainer, options);
-            chart.render();
-        })
-        .catch(error => console.error("Error loading chart data:", error));
-}
-
-
-function redirectToLogin() {
-    event.preventDefault();
-    window.location.href = "/login/";
-}
 
 function addToWatchlist(event) {
     event.preventDefault();
@@ -172,12 +58,6 @@ function addToWatchlist(event) {
         });
 }
 
-function getCSRFToken() {
-    return document.querySelector("[name=csrfmiddlewaretoken]").value;
-}
-function getCurrency() {
-    return document.querySelector("#id_currency").value;
-}
 
 function updateWatchlist() {
     const watchlistContainer = document.querySelector(".watchlist .list-group");
@@ -235,6 +115,17 @@ function updateWatchlist() {
                     );
                 priceText.textContent = `${priceDisplay} / ${changeDisplay}`;
                 listItemPrice.appendChild(priceText);
+
+                const removeButton = document.createElement("button");
+
+                removeButton.classList.add("btn", "p-0", "border-0", "remove-item-btn", "ms-1");
+                removeButton.dataset.symbol = item.symbol.toUpperCase();
+                removeButton.title = "Remove from watchlist";
+                const removeIcon = document.createElement("i");
+
+                removeIcon.classList.add("bi", "bi-trash", );
+                removeButton.appendChild(removeIcon);
+
 
                 listItemDiv.appendChild(listItemPrice);
 

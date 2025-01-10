@@ -36,6 +36,7 @@ def register(request):
 
 class CustomLoginView(LoginView):
     authentication_form = LoginForm
+    redirect_authenticated_user = True
 
     def form_invalid(self, form):
         messages.error(self.request, "Invalid username or password.")
