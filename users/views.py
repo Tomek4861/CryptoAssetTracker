@@ -55,6 +55,10 @@ def add_to_watchlist(request):
     print(name, symbol)
     if not name or not symbol:
         return Response(dict(success=False, message="Invalid data"), status=400)
+    if symbol.upper() not in COINS:
+        return Response(dict(success=False, message="Invalid coin symbol"), status=400)
+
+
     try:
         WatchListItem.objects.create(user=request.user, name=name, symbol=symbol)
         return Response(dict(success=True, message=f"{name} added to watchlist"), status=201)
@@ -100,6 +104,9 @@ def add_to_portfolio(request):
 
     if not name or not symbol:
         return Response(dict(success=False, message="Invalid data"), status=400)
+    if symbol.upper() not in COINS:
+        return Response(dict(success=False, message="Invalid coin symbol"), status=400)
+
     if amount <= 0:
         return Response(dict(success=False, message="Invalid amount"), status=400)
     try:

@@ -53,6 +53,8 @@ def chart_data(request):
 def multiple_coins_price(request):
     if not (coins := request.GET.getlist("coins[]")):
         return Response({"error": "No coins provided"}, status=400)
+    coins = list(sorted(set(map(lambda x: x.lower(), coins))))
+
     currency = request.GET.get("currency", DEFAULT_COIN_DATA["currency"])
     cache_key = f"{currency}_{'_'.join(coins)}_{currency}"
     cached_data = cache.get(cache_key)
