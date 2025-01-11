@@ -1,4 +1,4 @@
-import { getCSRFToken, showToast, calculatePortfolioChangePercent } from "./utils.js";
+import { getCSRFToken, showToast, calculatePortfolioChangePercent, priceFormatter } from "./utils.js";
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -101,13 +101,13 @@ function updatePortfolio() {
 
                 const amountColumn = document.createElement("div");
                 amountColumn.classList.add("col-2", "d-flex", "align-items-center");
-                amountColumn.textContent = item.amount.toFixed(2);
+                amountColumn.textContent = priceFormatter(amount);
                 amountColumn.dataset.exactValue = item.amount;
                 listItem.append(amountColumn);
 
                 const totalValueColumn = document.createElement("div");
                 totalValueColumn.classList.add("col-2");
-                totalValueColumn.textContent = `$${totalCoinValue.toFixed(2)}`;
+                totalValueColumn.textContent = `$${priceFormatter(totalCoinValue)}`;
                 listItem.append(totalValueColumn);
 
 
@@ -172,7 +172,7 @@ function updatePortfolio() {
             const portfolioChangeValue = document.getElementById("portfolio-change-value");
             const portfolioChangePercent = document.getElementById("portfolio-change-percent");
 
-            portfolioValueBanner.textContent = `${totalPortfolioValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}$`;
+            portfolioValueBanner.textContent = `${priceFormatter(totalPortfolioValue)}$`;
             portfolioValueBanner.className = `text-glow fw-bold ${totalPortfolioChange >= 0 ? "glow-green" : "glow-red"
                 }`;
             portfolioChangeValue.textContent = `${totalPortfolioChange.toFixed(2)} $`;
@@ -247,7 +247,7 @@ function saveNewAmount(newAmount, symbol, amountColumn) {
         .then((response) => response.json())
         .then((data) => {
             if (data.success) {
-                showToast(`Updated amount for ${symbol} to ${parsedAmount.toFixed(2)}!`, true);
+                showToast(`Updated amount for ${symbol} to ${priceFormatter(parsedAmount)}!`, true);
                 updatePortfolio();
             } else {
                 showToast(`Failed to update amount for ${symbol}.`, false);

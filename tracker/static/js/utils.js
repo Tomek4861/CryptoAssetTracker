@@ -41,3 +41,46 @@ export function getCurrency() {
     const currencyElement = document.querySelector("#id_currency");
     return currencyElement ? currencyElement.value : "usd";
 }
+
+export function priceFormatter(value) {
+    const absoluteValue = Math.abs(value);
+
+    const sign = Math.sign(value) === -1 ? "-" : "";
+
+
+    let minFracDig = 0;
+    let maxFracDig = 2;
+
+    let strValue = absoluteValue.toString();
+
+    if (strValue.includes("e")){
+        strValue = Number(value).toFixed(8);
+    }
+
+    if (strValue.includes(".")) {
+        const decimalPart = strValue.split(".")[1];
+        const firstNonZeroIndex = decimalPart.search(/[1-9]/);
+        console.log(firstNonZeroIndex);
+
+        if (firstNonZeroIndex >= 4){
+
+            return `<${sign}0.0001`;
+       }
+
+        if (absoluteValue < 1) {
+            minFracDig = 2;
+            maxFracDig = 4;
+        } else {
+            minFracDig = 2;
+            maxFracDig = 2;
+        }
+    } else {
+        minFracDig = 0;
+        maxFracDig = 0;
+    }
+
+    return value.toLocaleString('en-US', {
+        minimumFractionDigits: minFracDig,
+        maximumFractionDigits: maxFracDig,
+    });
+}

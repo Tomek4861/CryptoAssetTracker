@@ -1,5 +1,5 @@
 import { loadChart } from "./chart.js";
-import { isLoggedIn, getCSRFToken, redirectToLogin, getCurrency, showToast  } from "./utils.js";
+import { isLoggedIn, getCSRFToken, redirectToLogin, getCurrency, showToast, priceFormatter  } from "./utils.js";
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -79,7 +79,7 @@ function updateWatchlist() {
 
             watchlistData.forEach((item) => {
                 const price = pricesData[item.symbol.toLowerCase()];
-                const priceDisplay = price ? `$${price.current_price.toFixed(2)}` : 'N/A';
+                const priceDisplay = price ? `$${priceFormatter(price.current_price)}` : 'N/A';
                 const changeDisplay = price ? `${price.change_24h.toFixed(2)}%` : 'N/A';
 
                 const listItem = document.createElement("div");
@@ -123,7 +123,7 @@ function updateWatchlist() {
                 removeButton.title = "Remove from watchlist";
                 const removeIcon = document.createElement("i");
 
-                removeIcon.classList.add("bi", "bi-trash", );
+                removeIcon.classList.add("bi", "bi-trash", "action-icon");
                 removeButton.appendChild(removeIcon);
 
 
@@ -190,6 +190,5 @@ function setupWatchlistDeleteListener() {
 
 
 //TODO: mobile view
-//TODO: code cleanup
 
 
