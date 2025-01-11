@@ -138,3 +138,11 @@ button:active {
 .table-row {
     border-bottom: 1px solid var(--color-border);
 }
+
+#customFooter {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text);
+    position:fixed;
+    bottom:0;
+
+}

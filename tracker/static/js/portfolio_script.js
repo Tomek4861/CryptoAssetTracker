@@ -145,8 +145,8 @@ function updatePortfolio() {
 
                 const goToChartButton = document.createElement("button");
                 goToChartButton.classList.add("btn", "p-0", "border-0", "ms-1");
-                goToChartButton.title = "GoToChart";
-                goToChartButton.onclick = function() { location.href='/?coin=${item.symbol.toUpperCase()}' };
+                goToChartButton.title = "Go To Chart";
+                goToChartButton.onclick = function() { location.href=`/?coin=${item.symbol.toUpperCase()}` };
 
                 const goToChartIcon = document.createElement("i");
                 goToChartIcon.classList.add("bi", "bi-graph-up", "mx-2", "action-icon");
