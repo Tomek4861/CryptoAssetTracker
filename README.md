@@ -22,6 +22,9 @@ cryptocurrency prices through candlestick charts, manage their watchlists, and m
 4. **User Authentication**:
     - Secure user registration and login system.
     - Personalized watchlists and portfolios tied to user accounts.
+5. **Comprehensive API Testing**:
+    - The app includes automated tests for the DRF API to ensure its functionality and reliability.
+    - Tests cover API endpoints with various edge cases.
 
 ## Technologies Used
 
@@ -83,10 +86,7 @@ cryptocurrency prices through candlestick charts, manage their watchlists, and m
 ## Future Improvements (Very Soon)
 
 - **Hosting**: Deploy the app to a production-ready server.
-- **Frontend Code Cleanup**: Refactor and optimize JavaScript, CSS  code.
 - **Mobile Optimization**: Enhance UI for mobile devices.
-- **Additional Features**:
-    - More timeframes, more charting options (If I would find better price api)
 
 ## Contributions
 
