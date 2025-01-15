@@ -4,8 +4,7 @@ from datetime import datetime
 
 import requests
 
-
-CACHE_TIMEOUT = 60 * 5
+CACHE_TIMEOUT = 60 * 5  # 5 minutes
 
 COINS = {
     "BTC": "Bitcoin",
@@ -36,8 +35,6 @@ TIMEFRAMES = (
     "1y",
 )
 
-
-
 CHART_COLORS = {
     "Green Red": ["#089981", "#f23645"],
     "Blue Purple": ["#0083c6", "#673ab7"],
@@ -45,12 +42,7 @@ CHART_COLORS = {
     "Only White": ["#ffffff", "#ffffff"],
 }
 
-
 DEFAULT_COIN_DATA = dict(coin="Bitcoin", currency="USD", timeframe="1w", chart_color="Green Red")
-
-
-def inverse_dict(d: dict) -> dict:
-    return {v: k for k, v in d.items()}
 
 
 @dataclass(frozen=True)

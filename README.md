@@ -30,7 +30,7 @@ cryptocurrency prices through candlestick charts, manage their watchlists, and m
 
 - **Backend**: Django (with Django Rest Framework for APIs)
 - **Frontend**: CSS, Bootstrap, JavaScript, and ApexCharts
-- **Database**: SQLite (default)
+- **Database**: SQLite
 - **Third-party APIs**: CoinGecko for cryptocurrency data
 
 ## Screenshots
@@ -83,7 +83,7 @@ cryptocurrency prices through candlestick charts, manage their watchlists, and m
    python manage.py runserver
    ```
 
-## Future Improvements (Very Soon)
+## Future Improvements
 
 - **Hosting**: Deploy the app to a production-ready server.
 - **Mobile Optimization**: Enhance UI for mobile devices.

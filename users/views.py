@@ -59,7 +59,6 @@ def add_to_watchlist(request):
     if symbol.upper() not in COINS:
         return Response(dict(success=False, message="Invalid coin symbol"), status=400)
 
-
     try:
         WatchListItem.objects.create(user=request.user, name=name, symbol=symbol)
         return Response(dict(success=True, message=f"{name} added to watchlist"), status=201)

@@ -1,8 +1,8 @@
 from django.contrib.auth.views import LogoutView
 from django.urls import path
-from . import views
-from .views import CustomLoginView, register, delete_from_watchlist
 
+from . import views
+from .views import CustomLoginView, register
 
 urlpatterns = [
     path('register/', register, name='register'),
