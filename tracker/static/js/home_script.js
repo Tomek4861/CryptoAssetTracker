@@ -86,16 +86,21 @@ function updateWatchlist() {
                 listItem.classList.add(
                     "list-group-item",
                     "d-flex",
-                    "flex-column",
-                    "flex-lg-row",
+                    "flex-row",
                     "justify-content-between",
-                    "align-items-start",
-                    "align-items-lg-center",
+                    "align-items-center",
                     "py-3"
                 );
                 const listItemDiv = document.createElement("div");
 
-                listItemDiv.classList.add("d-flex", "justify-content-between", "align-items-center", "w-100");
+                listItemDiv.classList.add(
+                    "d-flex",
+                    "flex-wrap",
+                    "flex-xxl-row",
+                    "justify-content-between",
+                    "align-items-xxl-center",
+                    "w-100"
+                );
                 const listItemSymbol = document.createElement("div");
                 listItemSymbol.onclick = function () { location.href = "/?coin=" + item.symbol.toUpperCase(); };
                 const symbolText = document.createElement("span");
@@ -106,12 +111,14 @@ function updateWatchlist() {
                 listItemDiv.appendChild(listItemSymbol);
 
                 const listItemPrice = document.createElement("div");
+                listItemPrice.classList.add("watchlist-price")
                 const priceText = document.createElement("span");
                 priceText.classList.add(
-                     "fw-normal",
+                    "fw-normal",
                     "text-" + (price && price.change_24h >= 0 ? "success" : "danger"),
                     "mt-2",
-                    "mt-md-0"
+                    "mt-md-0",
+                    "text-wrap"
                     );
                 priceText.textContent = `${priceDisplay} / ${changeDisplay}`;
                 listItemPrice.appendChild(priceText);

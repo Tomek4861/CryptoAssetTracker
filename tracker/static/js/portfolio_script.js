@@ -90,30 +90,32 @@ function updatePortfolio() {
                     "py-2"
                 );
                 const indexColumn = document.createElement("div");
-                indexColumn.classList.add("col-1");
+                indexColumn.classList.add("col-1", "col-lg-1");
                 indexColumn.textContent = index + 1;
                 listItem.append(indexColumn);
 
                 const symbolColumn = document.createElement("div");
-                symbolColumn.classList.add('col-2');
+                symbolColumn.classList.add('col-2', "col-lg-2");
                 symbolColumn.textContent = item.symbol.toUpperCase();
                 listItem.append(symbolColumn);
 
                 const amountColumn = document.createElement("div");
-                amountColumn.classList.add("col-2", "d-flex", "align-items-center");
+                amountColumn.classList.add("col-3", "d-flex", "align-items-center", "col-lg-2");
                 amountColumn.textContent = priceFormatter(amount);
                 amountColumn.dataset.exactValue = item.amount;
                 listItem.append(amountColumn);
 
                 const totalValueColumn = document.createElement("div");
-                totalValueColumn.classList.add("col-2");
+                totalValueColumn.classList.add("col-3", "col-lg-2");
                 totalValueColumn.textContent = `$${priceFormatter(totalCoinValue)}`;
                 listItem.append(totalValueColumn);
 
 
                 const priceChangeColumn = document.createElement("div");
                 priceChangeColumn.classList.add(
-                "col-3",
+                "col-lg-3",
+                "d-none",
+                "d-lg-inline",
                 `text-${priceDict && priceDict.change_24h >= 0 ? "success" : "danger"}`
                 )
                 priceChangeColumn.textContent = `${changePrice.toFixed(2)} $ / ${changePercent.toFixed(2)}%`;
@@ -121,7 +123,8 @@ function updatePortfolio() {
 
                 const actionColumn = document.createElement("div");
                 actionColumn.classList.add(
-                "col-2",
+                "col-3",
+                "col-lg-2",
                 "text-center",
                 "d-flex",
                 "align-items-center",

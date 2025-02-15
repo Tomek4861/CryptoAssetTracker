@@ -7,7 +7,7 @@
 
 
   <div class="row ">
-    <div class="col-md-2">
+    <div class="col-lg-2 mb-5">
       <div class="card options asset-options">
         <div class="card-header"><h3 class="text-center fw-bold">Options</h3></div>
         <div class="card-body">
@@ -32,7 +32,7 @@
             <div class="buttons mt-5">
               <button class="btn btn-secondary d-block mx-auto w-100 mb-3" id="addToWatchlist">Add To Watchlist</button>
               <div>
-                <button class="btn btn-primary btn-lg d-block mx-auto shadow-md w-100">Update</button>
+                <button class="btn btn-primary btn-lg d-block mx-auto shadow-lg w-100">Update</button>
               </div>
             </div>
 
@@ -43,7 +43,7 @@
     </div>
 
 
-    <div class="col-md-8">
+    <div class="col-lg-8 mb-5">
       <!--            <h1 class="text-center">BITCOIN USD SPOT</h1>-->
       <div id="candlestickChart"></div>
 
@@ -51,9 +51,8 @@
     </div>
 
 
-    <div class="col-md-2">
-
-      <div class="card options watchlist">
+    <div class="col-lg-2 mb-5 ">
+      <div class="card options watchlist mb-4">
         <div class="card-header"><h3 class="text-center fw-bold">Watchlist</h3></div>
         <div class="card-body">
           {% csrf_token %}

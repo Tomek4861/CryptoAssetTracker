@@ -60,7 +60,6 @@ export function priceFormatter(value) {
     if (strValue.includes(".")) {
         const decimalPart = strValue.split(".")[1];
         const firstNonZeroIndex = decimalPart.search(/[1-9]/);
-        console.log(firstNonZeroIndex);
 
         if (firstNonZeroIndex >= 4){
 
@@ -70,7 +69,12 @@ export function priceFormatter(value) {
         if (absoluteValue < 1) {
             minFracDig = 2;
             maxFracDig = 4;
-        } else {
+        }
+        else if (absoluteValue >= 1000){
+            minFracDig = 1;
+            maxFracDig = 1;
+        }
+        else {
             minFracDig = 2;
             maxFracDig = 2;
         }
